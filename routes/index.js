@@ -2,6 +2,7 @@
 
 var Fs = require('fs');
 var Path = require('path');
+var Util = require('../util');
 var Routes = {};
 
 Fs.readdirSync(__dirname)
@@ -13,7 +14,8 @@ Fs.readdirSync(__dirname)
     path = Path.resolve(__dirname, Path.join(__dirname, path));
 
     // load model
-    Routes[path.substring(0, path.length - 3)] = require(path);
+    var namespace = Util.capitalize(path.substring(0, path.length - 3));
+    Routes[namespace] = require(path);
   });
 
 module.exports = Routes;
