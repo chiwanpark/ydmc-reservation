@@ -14,7 +14,7 @@ Fs.readdirSync(__dirname)
     path = Path.resolve(__dirname, Path.join(__dirname, path));
 
     // load model
-    var namespace = Util.capitalize(path.substring(0, path.length - 3));
+    var namespace = Util.capitalize(Path.basename(path, '.js'));
     Routes[namespace] = require(path);
   });
 
