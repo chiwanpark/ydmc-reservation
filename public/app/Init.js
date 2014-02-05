@@ -4,6 +4,7 @@ Ext.Loader.setConfig({
   enable: true,
   disableCaching: true,
   paths: {
+    'YdmcReseravtion': '/app',
     "Extensible": "/lib/extensible/src"
   }
 });
@@ -11,7 +12,6 @@ Ext.Loader.setConfig({
 Ext.application({
   name: 'YdmcReservation',
   appFolder: '/app',
-  autoCreateViewport: true,
   requires: [
     'YdmcReservation.view.Login'
   ],
@@ -19,6 +19,7 @@ Ext.application({
     'Login'
   ],
   controllers: [
+    'YdmcReservation.controller.Auth'
   ],
   launch: function () {
     var loginView = Ext.create('YdmcReservation.view.Login');
