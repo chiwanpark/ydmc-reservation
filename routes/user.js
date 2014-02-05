@@ -138,7 +138,7 @@ User.login = function (request, response) {
     return;
   }
 
-  var query = Models.User.findOne({email: email});
+  var query = Models.User.findOne({email: email, verified: true});
 
   query.exec().then(function (user) {
     if (user && user.verifyPassword(password)) {
