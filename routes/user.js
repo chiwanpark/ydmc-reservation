@@ -118,7 +118,7 @@ User.put = function (request, response) {
       if (error) { // error occurred
         response.json({success: false, message: Messages.errorOnDatabase})
       } else { // complete saving user
-        response.json({success: true, instance: instance, message: Messages.updateSuccess});
+        response.json({success: true, instance: instance, message: Messages.userUpdateSuccess});
       }
     });
   }, function () {

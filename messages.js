@@ -13,5 +13,6 @@ module.exports = {
   bookDelete: '예약을 취소했습니다.',
   cannotBookOnHoliday: '선택하신 날은 예약이 불가능 한 날짜입니다.',
   holiday: '예약 금지일',
+  userUpdateSuccess: '선생님 정보 수정에 성공했습니다. 다시 로그인 해주세요.',
   updateSuccess: '정보 수정에 성공했습니다.'
 };
