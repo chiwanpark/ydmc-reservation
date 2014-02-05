@@ -6,6 +6,7 @@ Ext.define('YdmcReservation.controller.Auth', {
   views: ['Login'],
 
   loginURL: '/user/login',
+  registerURL: '/user',
 
   init: function (app) {
     this.app = app;
@@ -13,12 +14,28 @@ Ext.define('YdmcReservation.controller.Auth', {
       'login button#submit': {
         click: this.loginAction,
         scope: this
+      },
+      'login button#register': {
+        click: this.showRegisterWindow,
+        scope: this
+      },
+      'registerUser button#submit': {
+        click: this.registerUserAction,
+        scope: this
+      },
+      'registerUser button#cancel': {
+        click: this.registerUserCancel,
+        scope: this
       }
     });
   },
 
   getLoginPanel: function () {
     return Ext.ComponentQuery.query('login')[0];
+  },
+
+  getRegisterUserPanel: function () {
+    return Ext.ComponentQuery.query('registerUser')[0];
   },
 
   loginAction: function () {
@@ -80,6 +97,84 @@ Ext.define('YdmcReservation.controller.Auth', {
     });
   },
 
+  showRegisterWindow: function () {
+    var registerPanel = Ext.create('YdmcReservation.view.RegisterUser');
+    registerPanel.center().show();
+  },
+
+  registerUserAction: function () {
+    var registerPanel = this.getRegisterUserPanel();
+    var formPanel = registerPanel.down('form');
+    var email = formPanel.down('textfield[name=email]').getValue();
+    var password = formPanel.down('textfield[name=password]').getValue();
+    var teacherName = formPanel.down('textfield[name=teacherName]').getValue();
+    var schoolName = formPanel.down('textfield[name=schoolName]').getValue();
+
+    this.maskRegisterUserWindow();
+
+    Ext.Ajax.request({
+      method: 'POST',
+      url: this.registerURL,
+      params: {
+        email: email,
+        password: password,
+        teacherName: teacherName,
+        schoolName: schoolName
+      },
+      scope: this,
+      success: this.registerUserSuccess,
+      failure: this.registerUserFailure
+    });
+  },
+
+  registerUserSuccess: function (connection) {
+    this.unmaskRegisterUserWindow();
+
+    var result = Ext.JSON.decode(connection.responseText);
+    if (!result) {
+      result = {};
+      result.success = false;
+      result.message = connection.responseText;
+    }
+
+    if (result.success) {
+      Ext.Msg.show({
+        title: 'Success!',
+        msg: result.message,
+        icon: Ext.Msg.INFO,
+        buttons: Ext.Msg.OK
+      });
+
+      var registerPanel = this.getRegisterUserPanel();
+      registerPanel.close();
+      registerPanel.destroy();
+    } else {
+      Ext.Msg.show({
+        title: 'Error!',
+        msg: result.message,
+        icon: Ext.Msg.ERROR,
+        buttons: Ext.Msg.OK
+      });
+    }
+  },
+
+  registerUserFailure: function (connection) {
+    this.unmaskRegisterUserWindow();
+
+    Ext.Msg.show({
+      title: 'Error!',
+      msg: connection.responseText,
+      icon: Ext.Msg.ERROR,
+      buttons: Ext.Msg.OK
+    });
+  },
+
+  registerUserCancel: function () {
+    var registerPanel = this.getRegisterUserPanel();
+    registerPanel.close();
+    registerPanel.destroy();
+  },
+
   maskLoginWindow: function () {
     var loginPanel = this.getLoginPanel();
     Ext.get(loginPanel.getEl()).mask('로그인 중 입니다... 잠시만 기다려주세요.', 'loading');
@@ -88,5 +183,15 @@ Ext.define('YdmcReservation.controller.Auth', {
   unmaskLoginWindow: function () {
     var loginPanel = this.getLoginPanel();
     Ext.get(loginPanel.getEl()).unmask();
+  },
+
+  maskRegisterUserWindow: function () {
+    var registerPanel = this.getRegisterUserPanel();
+    Ext.get(registerPanel.getEl()).mask('사용자 등록 중 입니다... 잠시만 기다려주세요.', 'loading');
+  },
+
+  unmaskRegisterUserWindow: function () {
+    var registerPanel = this.getRegisterUserPanel();
+    Ext.get(registerPanel.getEl()).unmask();
   }
 });

@@ -73,7 +73,7 @@ User.post = function (request, response) {
         if (error) { // error occurred
           response.json({success: false})
         } else { // complete saving user
-          response.json({success: true, instance: instance});
+          response.json({success: true, message: Messages.postUserSuccess, instance: instance});
         }
       });
     } else { // if teacher name is duplicated

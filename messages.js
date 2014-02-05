@@ -1,5 +1,6 @@
 module.exports = {
   duplicatedEmail: '선생님 이메일이 이미 존재합니다.',
+  postUserSuccess: '새로 선생님 정보를 추가했습니다! 로그인 해주세요.',
   errorOnDatabase: '데이터베이스 접근에 실패했습니다.',
   inputValidationFailed: '입력된 데이터가 올바르지 않습니다.',
   unauthorized: '권한이 없습니다.',
