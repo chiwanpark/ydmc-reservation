@@ -48,11 +48,11 @@ Ext.define('YdmcReservation.view.Viewport', {
                 itemId: 'showManageUsers',
                 text: '사용자 관리'
               },
-              {
-                xtype: 'button',
-                itemId: 'showPreferences',
-                text: '환경설정'
-              },
+//              {
+//                xtype: 'button',
+//                itemId: 'showPreferences',
+//                text: '환경설정'
+//              },
               {
                 xtype: 'button',
                 itemId: 'showManageHolidays',
