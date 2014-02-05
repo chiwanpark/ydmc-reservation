@@ -3,9 +3,10 @@
 Ext.define('YdmcReservation.controller.Auth', {
   extend: 'Ext.app.Controller',
 
-  views: ['Login'],
+  views: ['Login', 'Viewport'],
 
   loginURL: '/user/login',
+  logoutURL: '/user/logout',
   registerURL: '/user',
 
   init: function (app) {
@@ -25,6 +26,10 @@ Ext.define('YdmcReservation.controller.Auth', {
       },
       'registerUser button#cancel': {
         click: this.registerUserCancel,
+        scope: this
+      },
+      'viewport button#logout': {
+        click: this.logoutAction,
         scope: this
       }
     });
@@ -173,6 +178,19 @@ Ext.define('YdmcReservation.controller.Auth', {
     var registerPanel = this.getRegisterUserPanel();
     registerPanel.close();
     registerPanel.destroy();
+  },
+
+  logoutAction: function () {
+    Ext.Ajax.request({
+      method: 'GET',
+      url: this.logoutURL,
+      success: function () {
+        location.href = '/';
+      },
+      failure: function () {
+        location.href = '/';
+      }
+    });
   },
 
   maskLoginWindow: function () {
