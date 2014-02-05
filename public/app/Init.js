@@ -15,10 +15,14 @@ Ext.application({
   requires: ['YdmcReservation.view.Login'],
   views: ['Login'],
   controllers: [
+    'YdmcReservation.controller.User',
     'YdmcReservation.controller.Auth'
   ],
   launch: function () {
     var loginView = Ext.create('YdmcReservation.view.Login');
     loginView.center().show();
+  },
+  getViewportWindow: function () {
+    return Ext.ComponentQuery.query('viewport window#window')[0];
   }
 });

@@ -19,6 +19,17 @@ Ext.define('YdmcReservation.view.Viewport', {
       draggable: false,
       autoShow: true,
       closable: false,
+      layout: 'fit',
+      items: [
+        {
+          xtype: 'panel',
+          itemId: 'contentsPanel',
+          layout: {type: 'fit'},
+          items: {
+            xtype: 'panel'
+          }
+        }
+      ],
       lbar: {
         xtype: 'toolbar',
         items: [
