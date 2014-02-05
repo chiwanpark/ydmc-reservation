@@ -33,7 +33,7 @@ Ext.define('YdmcReservation.controller.Auth', {
         scope: this
       },
       'viewport window#window': {
-        afterrender: this.setWindowTitle,
+        afterrender: this.afterRenderWindow,
         scope: this
       }
     });
@@ -197,12 +197,16 @@ Ext.define('YdmcReservation.controller.Auth', {
     });
   },
 
-  setWindowTitle: function(window) {
+  afterRenderWindow: function(window) {
     var schoolName = this.app.loggedUser.schoolName;
     var teacherName = this.app.loggedUser.teacherName;
     var title = 'YDMC Reservation (' + schoolName + ', ' + teacherName + ')';
 
     window.setTitle(title);
+
+    if (!this.app.loggedUser.admin) {
+      window.down('buttongroup#adminMenu').setDisabled(true);
+    }
   },
 
   maskLoginWindow: function () {

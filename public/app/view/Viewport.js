@@ -25,6 +25,7 @@ Ext.define('YdmcReservation.view.Viewport', {
           {
             xtype: 'buttongroup',
             title: '관리자 메뉴',
+            itemId: 'adminMenu',
             layout: {
               type: 'vbox',
               align: 'stretch'
@@ -56,6 +57,7 @@ Ext.define('YdmcReservation.view.Viewport', {
           {
             xtype: 'buttongroup',
             title: '사용자 메뉴',
+            itemId: 'userMenu',
             layout: {
               type: 'vbox',
               align: 'stretch'
