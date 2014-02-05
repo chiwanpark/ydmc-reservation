@@ -11,8 +11,8 @@ User.registerRoute = function (app) {
   app.post('/user', User.post);
   app.post('/user/login', User.login);
   app.get('/user/logout', User.logout);
-  app.get('/user/:email', User.getByEmail);
-  app.put('/user/:email', Middlewares.Auth.requireLogged, User.put);
+  app.get('/user/:id', User.getById);
+  app.put('/user/:id', Middlewares.Auth.requireLogged, User.put);
 };
 
 User.getList = function (request, response) {
@@ -25,9 +25,9 @@ User.getList = function (request, response) {
   });
 };
 
-User.getByEmail = function (request, response) {
-  var email = request.params.email;
-  var query = Models.User.findOne({email: email}).lean();
+User.getById = function (request, response) {
+  var id = request.params.id;
+  var query = Models.User.findById(id).lean();
 
   query.exec().then(function (user) { // success
     if (user) {
@@ -85,27 +85,31 @@ User.post = function (request, response) {
 };
 
 User.put = function (request, response) {
-  var email = request.params.email || null;
+  var id = request.params.id || null;
+  var email = request.body.email || null;
   var teacherName = request.body.teacherName || null;
   var password = request.body.password || null;
   var schoolName = request.body.schoolName || null;
-  var admin = request.body.admin || null;
-  var verified = request.body.verified || null;
+  var admin = request.body.admin === "true";
+  var verified = request.body.verified === "true";
 
   // validate parameters
-  if (!email || !teacherName || !password || !schoolName || admin === null || verified === null) {
+  if (!id || !email || !teacherName || !schoolName) {
     response.json({success: false, message: Messages.inputValidationFailed});
     return;
   }
 
   // update user information
-  var query = Models.User.findOne({email: email});
+  var query = Models.User.findById(id);
 
   // because of mongoose setter is not applied when using findOneAndUpdate method,
   // we first just findOne, next modify and finally save.
   query.exec().then(function (user) {
     user.teacherName = teacherName;
-    user.password = password;
+    if (password) {
+      user.password = password;
+    }
+    user.email = email;
     user.schoolName = schoolName;
     user.admin = admin;
     user.verified = verified;
@@ -117,6 +121,8 @@ User.put = function (request, response) {
         response.json({success: true, instance: instance, message: Messages.updateSuccess});
       }
     });
+  }, function () {
+    response.json({success: false, message: Messages.errorOnDatabase});
   }, function () {
     response.json({success: false, message: Messages.errorOnDatabase});
   });
