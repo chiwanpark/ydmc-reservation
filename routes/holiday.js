@@ -3,11 +3,12 @@
 var Middlewares = require('../middlewares');
 var Models = require('../models');
 var Messages = require('../messages');
+var _ = require('lodash');
 
 var Holiday = {};
 
 Holiday.registerRoute = function (app) {
-  app.get('/holiday', Middlewares.Auth.requireAdmin, Holiday.getList);
+  app.get('/holiday', Middlewares.Auth.requireLogged, Holiday.getList);
   app.post('/holiday/:date', Middlewares.Auth.requireAdmin, Holiday.post);
   app.delete('/holiday/:date', Middlewares.Auth.requireAdmin, Holiday.delete);
 };
@@ -16,9 +17,19 @@ Holiday.getList = function (request, response) {
   var query = Models.Holiday.find();
 
   query.exec().then(function (holidays) {
-    response.json({success: true, holidays: holidays});
+    var formattedHolidays = _.map(holidays, function(value) {
+      return {
+        id: value._id,
+        cid: 1,
+        title: Messages.holiday,
+        start: value.date,
+        end: value.date,
+        ad: true
+      }
+    });
+    response.json({success: true, holidays: formattedHolidays});
   }, function () {
-    response.json({success: true, message: Messages.errorOnDatabase});
+    response.json({success: false, message: Messages.errorOnDatabase});
   });
 };
 
