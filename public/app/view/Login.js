@@ -10,6 +10,8 @@ Ext.define('YdmcReservation.view.Login', {
   title: 'Login',
   closeAction: 'hide',
   closable: false,
+  resizable: false,
+  draggable: false,
   itemId: 'login',
   items: [
     {

@@ -15,6 +15,8 @@ Ext.define('YdmcReservation.view.Viewport', {
       xtype: 'window',
       itemId: 'window',
       maximized: true,
+      resizable: false,
+      draggable: false,
       autoShow: true,
       closable: false,
       lbar: {

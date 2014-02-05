@@ -6,6 +6,8 @@ Ext.define('YdmcReservation.view.RegisterUser', {
   height: 200,
   width: 360,
   modal: true,
+  resizable: false,
+  draggable: false,
   layout: 'fit',
   title: 'Register User',
   closeAction: 'destroy',
