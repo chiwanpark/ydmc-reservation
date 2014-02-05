@@ -19,7 +19,7 @@ Holiday.getList = function (request, response) {
   query.exec().then(function (holidays) {
     var formattedHolidays = _.map(holidays, function(value) {
       return {
-        id: value._id,
+        id: +value._id.getTimestamp(),
         cid: 1,
         title: Messages.holiday,
         start: value.date,
@@ -63,7 +63,7 @@ Holiday.delete = function (request, response) {
   query.exec().then(function () {
     response.json({success: true});
   }, function () {
-    response.json({success: true, message: Messages.errorOnDatabase});
+    response.json({success: false, message: Messages.errorOnDatabase});
   });
 };
 
