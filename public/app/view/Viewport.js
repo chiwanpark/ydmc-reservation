@@ -56,7 +56,7 @@ Ext.define('YdmcReservation.view.Viewport', {
               {
                 xtype: 'button',
                 itemId: 'showManageHolidays',
-                text: '예약 불가능 날짜 관리'
+                text: '예약 금지일 관리'
               },
               {
                 xtype: 'button',
