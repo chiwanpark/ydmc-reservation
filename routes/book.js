@@ -135,21 +135,31 @@ Book.post = function (request, response) {
         if (count >= 3) { // count exceed
           response.json({success: false, message: Messages.exceedMaxBookCount});
         } else {
-          // create new book
-          var book = new Models.Book({
-            register: user._id,
-            schoolName: user.schoolName,
-            preference: preference,
-            date: date,
-            deprecated: deprecated
-          });
+          var subQuery2 = Models.Book.count({deprecated: false, register: user._id, preference: preference});
 
-          book.save(function (error, instance) {
-            if (error) {
-              response.json({success: false, message: Messages.errorOnDatabase});
+          subQuery2.exec().then(function (count) {
+            if (count == 0) {
+              // create new book
+              var book = new Models.Book({
+                register: user._id,
+                schoolName: user.schoolName,
+                preference: preference,
+                date: date,
+                deprecated: deprecated
+              });
+
+              book.save(function (error, instance) {
+                if (error) {
+                  response.json({success: false, message: Messages.errorOnDatabase});
+                } else {
+                  response.json({success: true, message: Messages.bookSuccess, instance: instance});
+                }
+              });
             } else {
-              response.json({success: true, message: Messages.bookSuccess, instance: instance});
+              response.json({success: false, message: Messages.duplicatedBookPrefernces});
             }
+          }, function () {
+            response.json({success: false, message: Messages.errorOnDatabase});
           });
         }
       }, function () {
