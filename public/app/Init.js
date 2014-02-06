@@ -17,6 +17,7 @@ Ext.application({
   controllers: [
     'YdmcReservation.controller.User',
     'YdmcReservation.controller.Holiday',
+    'YdmcReservation.controller.Book',
     'YdmcReservation.controller.Auth'
   ],
   launch: function () {
