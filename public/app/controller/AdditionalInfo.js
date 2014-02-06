@@ -6,6 +6,7 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
   getLastFileURL: '/file/last',
   getLastCommentURL: '/comment/last',
   postFileURL: '/file',
+  postCommentURL: '/comment',
 
   views: ['Viewport'],
 
@@ -14,6 +15,10 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
     this.control({
       'viewport buttongroup#userMenu button#addInformation': {
         click: this.showAdditionalInfo,
+        scope: this
+      },
+      'panel#contentsPanel form#commentForm button#submit': {
+        click: this.uploadComment,
         scope: this
       },
       'panel#contentsPanel form#fileForm button#submit': {
@@ -75,6 +80,7 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
         },
         {
           xtype: 'form',
+          itemId: 'commentForm',
           defaults: {
             labelWidth: 60,
             anchor: '100%'
@@ -85,7 +91,7 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
               fieldLabel: '추가 코멘트',
               name: 'comment',
               value: this.comment
-                ? this.comment
+                ? this.comment.comment
                 : ''
             }
           ],
@@ -96,6 +102,7 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
               },
               {
                 xtype: 'button',
+                itemId: 'submit',
                 formBind: true,
                 text: '코멘트 올리기'
               }
@@ -155,7 +162,7 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
     }
 
     if (result.success) {
-      this.fileInfo = result.comment;
+      this.comment = result.comment;
     }
     this.showPanel();
   },
@@ -198,5 +205,51 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
         }
       })
     }
+  },
+
+  uploadComment: function () {
+    var form = Ext.ComponentQuery.query('form#commentForm')[0];
+    var comment = form.down('textarea').getValue();
+
+    Ext.Ajax.request({
+      url: this.postCommentURL,
+      method: 'POST',
+      params: {
+        comment: comment
+      },
+      scope: this,
+      success: function (connection) {
+        var result = Ext.JSON.decode(connection.responseText);
+        if (!result) {
+          result = {};
+          result.success = false;
+          result.message = connection.responseText;
+        }
+
+        if (result.success) {
+          Ext.Msg.show({
+            title: '코멘트',
+            msg: '코멘트를 잘 등록하였습니다.',
+            icon: Ext.Msg.INFO,
+            buttons: Ext.Msg.OK
+          })
+        } else {
+          Ext.Msg.show({
+            title: 'Error!',
+            msg: result.message,
+            icon: Ext.Msg.ERROR,
+            buttons: Ext.Msg.OK
+          });
+        }
+      },
+      failure: function (connection) {
+        Ext.Msg.show({
+          title: 'Error!',
+          msg: '코멘트 등록에 실패했습니다. ' + connection.responseText,
+          icon: Ext.Msg.ERROR,
+          buttons: Ext.Msg.OK
+        });
+      }
+    })
   }
 });
