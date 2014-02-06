@@ -38,8 +38,10 @@ Ext.define('YdmcReservation.controller.Holiday', {
     contentsPanel.removeAll(true);
 
     this.holidayStore = Ext.create('YdmcReservation.store.Holiday');
+    this.holidayCalendarStore = Ext.create('YdmcReservation.store.HolidayCalendar');
     contentsPanel.add({
       xtype: 'holidayPanel',
+      calendarStore: this.holidayCalendarStore,
       eventStore: this.holidayStore
     });
   },

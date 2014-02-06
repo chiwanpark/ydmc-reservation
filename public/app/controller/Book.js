@@ -240,8 +240,10 @@ Ext.define('YdmcReservation.controller.Book', {
     contentsPanel.removeAll(true);
 
     this.bookStore = Ext.create('YdmcReservation.store.Book');
+    this.bookCalendarStore = Ext.create('YdmcReservation.store.BookCalendar');
     contentsPanel.add({
       xtype: 'bookPanel',
+      calendarStore: this.bookCalendarStore,
       eventStore: this.bookStore
     });
   },
