@@ -47,7 +47,7 @@ User.post = function (request, response) {
   var schoolName = request.body.schoolName || null;
   var phone = request.body.phone || null;
   var admin = false;
-  var verified = false;
+  var verified = true;
 
   // validate parameters
   if (!email || !teacherName || !password || !schoolName) {
