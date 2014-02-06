@@ -9,6 +9,7 @@ module.exports = function (mongoose) {
     email: String,
     password: String,
     schoolName: String,
+    phone: String,
     admin: Boolean,
     verified: Boolean
   });

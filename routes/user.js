@@ -45,6 +45,7 @@ User.post = function (request, response) {
   var teacherName = request.body.teacherName || null;
   var password = request.body.password || null;
   var schoolName = request.body.schoolName || null;
+  var phone = request.body.phone || null;
   var admin = false;
   var verified = false;
 
@@ -63,6 +64,7 @@ User.post = function (request, response) {
       var user = new Models.User({
         teacherName: teacherName,
         password: password,
+        phone: phone,
         email: email,
         schoolName: schoolName,
         admin: admin,
@@ -92,6 +94,7 @@ User.put = function (request, response) {
   var schoolName = request.body.schoolName || null;
   var admin = request.body.admin === "true";
   var verified = request.body.verified === "true";
+  var phone = request.body.phone || null;
 
   // validate parameters
   if (!id || !email || !teacherName || !schoolName) {
@@ -113,6 +116,7 @@ User.put = function (request, response) {
     user.schoolName = schoolName;
     user.admin = admin;
     user.verified = verified;
+    user.phone = phone;
 
     user.save(function (error, instance) {
       if (error) { // error occurred

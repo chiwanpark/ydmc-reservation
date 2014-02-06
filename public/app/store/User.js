@@ -13,7 +13,7 @@ Ext.define('YdmcReservation.store.User', {
     }
   },
   fields: [
-    '_id', 'teacherName', 'schoolName', 'password', 'email',
+    '_id', 'teacherName', 'schoolName', 'password', 'email', 'phone',
     {
       name: 'admin',
       type: 'boolean'

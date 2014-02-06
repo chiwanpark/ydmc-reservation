@@ -43,6 +43,7 @@ Ext.define('YdmcReservation.controller.User', {
     contentsPanel.down('textfield[name=email]').setValue(this.app.loggedUser.email);
     contentsPanel.down('textfield[name=schoolName]').setValue(this.app.loggedUser.schoolName);
     contentsPanel.down('textfield[name=teacherName]').setValue(this.app.loggedUser.teacherName);
+    contentsPanel.down('textfield[name=phone]').setValue(this.app.loggedUser.phone);
     contentsPanel.down('hidden[name=admin]').setValue(this.app.loggedUser.admin);
     contentsPanel.down('hidden[name=verified]').setValue(this.app.loggedUser.verified);
   },
@@ -54,6 +55,7 @@ Ext.define('YdmcReservation.controller.User', {
     var password = formPanel.down('textfield[name=password]').getValue();
     var teacherName = formPanel.down('textfield[name=teacherName]').getValue();
     var schoolName = formPanel.down('textfield[name=schoolName]').getValue();
+    var phone = formPanel.down('textfield[name=phone]').getValue();
     var admin = formPanel.down('hidden[name=admin]').getValue();
     var verified = formPanel.down('hidden[name=verified]').getValue();
 
@@ -67,6 +69,7 @@ Ext.define('YdmcReservation.controller.User', {
         password: password,
         teacherName: teacherName,
         schoolName: schoolName,
+        phone: phone,
         verified: verified,
         admin: admin
       },
@@ -151,6 +154,7 @@ Ext.define('YdmcReservation.controller.User', {
         params: {
           admin: data.admin,
           email: data.email,
+          phone: data.phone || '',
           schoolName: data.schoolName,
           teacherName: data.teacherName,
           verified: data.verified

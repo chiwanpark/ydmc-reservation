@@ -60,6 +60,14 @@ Ext.define('YdmcReservation.view.UserManageGridPanel', {
       }
     },
     {
+      text: '휴대전화 번호',
+      dataIndex: 'phone',
+      flex: 1,
+      editor: {
+        xtype: 'textfield'
+      }
+    },
+    {
       text: '관리자',
       dataIndex: 'admin',
       flex: 0.5,

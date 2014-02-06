@@ -4,7 +4,7 @@ Ext.define('YdmcReservation.view.RegisterUser', {
   extend: 'Ext.window.Window',
   alias: 'widget.registerUser',
   title: '가입하기',
-  height: 200,
+  height: 260,
   width: 360,
   resizable: false,
   draggable: false,

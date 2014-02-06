@@ -15,7 +15,7 @@ Ext.define('YdmcReservation.view.UserInfoPanel', {
       defaults: {
         anchor: '100%',
         xtype: 'textfield',
-        labelWidth: 60
+        labelWidth: 80
       },
       items: [
         {
@@ -34,6 +34,10 @@ Ext.define('YdmcReservation.view.UserInfoPanel', {
         {
           name: 'teacherName',
           fieldLabel: '선생님 이름'
+        },
+        {
+          name: 'phone',
+          fieldLabel: '휴대전화 번호'
         },
         {
           name: 'verified',
