@@ -18,6 +18,7 @@ Ext.application({
     'YdmcReservation.controller.User',
     'YdmcReservation.controller.Holiday',
     'YdmcReservation.controller.Book',
+    'YdmcReservation.controller.Calculate',
     'YdmcReservation.controller.Auth'
   ],
   launch: function () {
