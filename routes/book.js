@@ -7,7 +7,7 @@ var _ = require('lodash');
 
 var Book = {};
 
-Book.domain = 'http://localhost:3000';
+Book.domain = 'http://ydmc.co.kr';
 
 var summerizeBook = function (book) {
   return {
