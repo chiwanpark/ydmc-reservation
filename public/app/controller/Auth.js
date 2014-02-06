@@ -117,6 +117,7 @@ Ext.define('YdmcReservation.controller.Auth', {
     var email = formPanel.down('textfield[name=email]').getValue();
     var password = formPanel.down('textfield[name=password]').getValue();
     var teacherName = formPanel.down('textfield[name=teacherName]').getValue();
+    var phone = formPanel.down('textfield[name=phone]').getValue();
     var schoolName = formPanel.down('textfield[name=schoolName]').getValue();
 
     this.maskRegisterUserWindow();
@@ -128,6 +129,7 @@ Ext.define('YdmcReservation.controller.Auth', {
         email: email,
         password: password,
         teacherName: teacherName,
+        phone: phone,
         schoolName: schoolName
       },
       scope: this,
