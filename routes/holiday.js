@@ -14,10 +14,20 @@ Holiday.registerRoute = function (app) {
 };
 
 Holiday.getList = function (request, response) {
-  var query = Models.Holiday.find();
+  var startDate = new Date(request.query.startDate);
+  var endDate = new Date(request.query.endDate);
+
+  if (!_.isDate(startDate) || !_.isDate(endDate) || _.isNaN(startDate.getTime()) || _.isNaN(endDate.getTime())) {
+    startDate = new Date();
+    endDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 1);
+    endDate.setMonth(endDate.getMonth() + 1);
+  }
+
+  var query = Models.Holiday.find().where('date').gte(startDate).where('date').lte(endDate);
 
   query.exec().then(function (holidays) {
-    var formattedHolidays = _.map(holidays, function(value) {
+    var formattedHolidays = _.map(holidays, function (value) {
       return {
         id: +value._id.getTimestamp(),
         cid: 1,

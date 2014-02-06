@@ -9,10 +9,24 @@ var Book = {};
 
 var summerizeBook = function (book) {
   return {
-    schoolName: book.schoolName,
-    preference: book.preference,
-    date: book.date
+    id: +book._id.getTimestamp(),
+    cid: book.preference,
+    title: '(' + book.preference + ') ' + book.schoolName,
+    start: book.date,
+    end: book.date,
+    ad: true
   };
+};
+
+var summerizeHoliday = function (holiday) {
+  return {
+    id: +holiday._id.getTimestamp(),
+    cid: 4,
+    title: Messages.holiday,
+    start: holiday.date,
+    end: holiday.date,
+    ad: true
+  }
 };
 
 Book.registerRoute = function (app) {
@@ -52,10 +66,17 @@ Book.getSummary = function (request, response) {
 };
 
 Book.getList = function (request, response) {
-  var startDate = request.query.startDate;
-  var endDate = request.query.endDate;
+  var startDate = new Date(request.query.startDate);
+  var endDate = new Date(request.query.endDate);
 
-  var query = Models.Book.find().gtEq({date: startDate}).ltEq({date: endDate});
+  if (!_.isDate(startDate) || !_.isDate(endDate) || _.isNaN(startDate.getTime()) || _.isNaN(endDate.getTime())) {
+    startDate = new Date();
+    endDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 1);
+    endDate.setMonth(endDate.getMonth() + 1);
+  }
+
+  var query = Models.Book.find().where('date').gte(startDate).where('date').lte(endDate);
 
   query.exec().then(function (books) {
     var subQuery = Models.Book.populate(books, 'register');
@@ -70,16 +91,31 @@ Book.getList = function (request, response) {
 };
 
 Book.getSummaryList = function (request, response) {
-  var startDate = request.query.startDate;
-  var endDate = request.query.endDate;
+  var startDate = new Date(request.query.startDate);
+  var endDate = new Date(request.query.endDate);
 
-  var query = Models.Book.find().gtEq({date: startDate}).ltEq({date: endDate});
+  if (!_.isDate(startDate) || !_.isDate(endDate) || _.isNaN(startDate.getTime()) || _.isNaN(endDate.getTime())) {
+    startDate = new Date();
+    endDate = new Date();
+    startDate.setMonth(startDate.getMonth() - 1);
+    endDate.setMonth(endDate.getMonth() + 1);
+  }
+
+  var query = Models.Book.find().where('date').gte(startDate).where('date').lte(endDate);
 
   query.exec().then(function (books) {
-    response.json({success: true, books: _.map(books, summerizeBook)});
-  }, function () {
-    response.json({success: false, message: Messages.errorOnDatabase});
-  });
+      var summerizedBooks = _.map(books, summerizeBook);
+      var subQuery = Models.Holiday.find().where('date').gte(startDate).where('date').lte(endDate);
+      subQuery.exec().then(function (holidays) {
+        var summerizedHolidays = _.map(holidays, summerizeHoliday);
+        response.json({success: true, books: summerizedBooks.concat(summerizedHolidays)});
+      }, function () {
+        response.json({success: true, books: summerizedBooks});
+      });
+    }, function () {
+      response.json({success: false, message: Messages.errorOnDatabase});
+    }
+  );
 };
 
 Book.post = function (request, response) {
