@@ -9,7 +9,9 @@ var Book = {};
 
 var summerizeBook = function (book) {
   return {
-    id: +book._id.getTimestamp(),
+    _id: book._id,
+    register: book.register,
+    id: +book._id.getTimestamp() + Math.random() * 999,
     cid: book.preference,
     title: '(' + book.preference + ') ' + book.schoolName,
     start: book.date,
@@ -20,7 +22,7 @@ var summerizeBook = function (book) {
 
 var summerizeHoliday = function (holiday) {
   return {
-    id: +holiday._id.getTimestamp(),
+    id: +holiday._id.getTimestamp() + Math.random() * 999,
     cid: 4,
     title: Messages.holiday,
     start: holiday.date,
@@ -123,6 +125,11 @@ Book.post = function (request, response) {
   var preference = request.body.preference;
   var date = request.body.date;
   var deprecated = false;
+
+  if (!preference || !date) {
+    response.json({success: false, message: Messages.inputValidationFailed});
+    return;
+  }
 
   // check if date is holiday
   var query = Models.Holiday.count({date: date});

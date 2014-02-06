@@ -29,7 +29,7 @@ Holiday.getList = function (request, response) {
   query.exec().then(function (holidays) {
     var formattedHolidays = _.map(holidays, function (value) {
       return {
-        id: +value._id.getTimestamp(),
+        id: +value._id.getTimestamp() + Math.random() * 999,
         cid: 1,
         title: Messages.holiday,
         start: value.date,
