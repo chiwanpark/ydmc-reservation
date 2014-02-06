@@ -15,6 +15,7 @@ app.use(express.favicon());
 app.use(express.cookieParser());
 app.use(express.session({ secret: app.get('secret key') }));
 app.use(express.logger('dev'));
+app.use(express.bodyParser());
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
