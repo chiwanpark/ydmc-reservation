@@ -4,14 +4,19 @@ Ext.define('YdmcReservation.controller.Calculate', {
   extend: 'Ext.app.Controller',
 
   calculateURL: '/calculate',
+  getDetailURL: '/book',
 
-  views: ['Viewport', 'CalculateResultsCalendarPanel'],
+  views: ['Viewport', 'CalculateResultsCalendarPanel', 'BookDetailWindow'],
 
   init: function (app) {
     this.app = app;
     this.control({
       'viewport buttongroup#adminMenu button#showResults': {
         click: this.showResults,
+        scope: this
+      },
+      'calculateResultsCalendarPanel': {
+        eventclick: this.bookClick,
         scope: this
       },
       'calculateDateRangeWindow datepicker#rangeStart': {
@@ -31,6 +36,46 @@ Ext.define('YdmcReservation.controller.Calculate', {
         scope: this
       }
     });
+  },
+
+  bookClick: function(calendarPanel, record) {
+    Ext.Ajax.request({
+      method: 'GET',
+      url: this.getDetailURL + '/' + record.raw._id,
+      success: this.bookDetailArrived,
+      failure: this.calculateFailed,
+      scope: this
+    });
+  },
+
+  bookDetailArrived: function(connection){
+    var result = Ext.JSON.decode(connection.responseText);
+
+    if (!result) {
+      result = {};
+      result.success = false;
+      result.message = connection.responseText;
+    }
+
+    if (result.success) {
+      var window = Ext.create('YdmcReservation.view.BookDetailWindow');
+
+      window.center().show();
+
+      window.down('combo[name=preference]').setValue(result.book.preference);
+      window.down('textfield[name=schoolName]').setValue(result.book.schoolName);
+      window.down('textfield[name=date]').setValue(Ext.Date.format(new Date(result.book.date), 'Y-m-d'));
+      window.down('textfield[name=registered]').setValue(Ext.Date.format(new Date(result.book.registered), 'Y-m-d'));
+      window.down('textfield[name=file]').setValue(result.book.file ? result.book.file : '');
+      window.down('textarea[name=comment]').setValue(result.book.comment ? result.book.comment : '');
+    } else {
+      Ext.Msg.show({
+        title: 'Error!',
+        msg: result.message,
+        icon: Ext.Msg.ERROR,
+        buttons: Ext.Msg.OK
+      });
+    }
   },
 
   rangeStartSelected: function(datepicker, date) {
@@ -84,7 +129,7 @@ Ext.define('YdmcReservation.controller.Calculate', {
           msg: '날짜를 할당 받지 못한 학교가 존재합니다!',
           icon: Ext.Msg.WARNING,
           buttons: Ext.Msg.OK
-        })
+        });
       }
 
       contentsPanel.removeAll(true);

@@ -36,6 +36,7 @@ Calculate.get = function (request, response) {
       if (!(book.register in reserved)) {
         if ((count[date] < 2 || count[date] === undefined)) {
           reserved[book.register] = {
+            _id: book._id,
             id: +book._id.getTimestamp() + Math.random() * 999,
             title: '(' + book.preference + ') ' + book.schoolName,
             register: book.register,

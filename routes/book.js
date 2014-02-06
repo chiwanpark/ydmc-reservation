@@ -7,6 +7,8 @@ var _ = require('lodash');
 
 var Book = {};
 
+Book.domain = 'http://localhost:3000';
+
 var summerizeBook = function (book) {
   return {
     _id: book._id,
@@ -42,18 +44,43 @@ Book.registerRoute = function (app) {
 
 Book.get = function (request, response) {
   var id = request.params.id;
-  var query = Models.Book.findById(id);
+  var query = Models.Book.findById(id).lean();
 
   query.exec().then(function (book) {
-    var subQuery = book.populate('register');
-    subQuery.exec().then(function (populatedBook) {
-      response.json({success: true, instance: populatedBook});
-    }, function () {
-      response.json({success: false, message: Messages.errorOnDatabase});
-    });
+    Book.getFile(response, book);
   }, function () {
     response.json({success: false, message: Messages.errorOnDatabase});
   });
+};
+
+Book.getFile = function (response, book) {
+  var query = Models.File.find({register: book.register}).sort({registered: 'desc'}).limit(1).lean();
+
+  query.exec().then(function (file) {
+    file = file[0];
+    book.file = Book.domain + '/file/download/' + file._id;
+    Book.getComment(response, book);
+  }, function () {
+    book.file = '';
+    Book.getComment(response, book);
+  });
+};
+
+Book.getComment = function (response, book) {
+  var query = Models.Comment.find({register: book.register}).sort({registered: 'desc'}).limit(1).lean();;
+
+  query.exec().then(function (comment) {
+    comment = comment[0];
+    book.comment = comment.comment;
+    Book.returnBook(response, book);
+  }, function () {
+    book.comment = '';
+    Book.returnBook(response, book);
+  });
+};
+
+Book.returnBook = function(response, book) {
+  response.json({success: true, book: book});
 };
 
 Book.getSummary = function (request, response) {
