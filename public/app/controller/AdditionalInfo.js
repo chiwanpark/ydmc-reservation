@@ -47,6 +47,7 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
           title: '파일 첨부하기',
           defaults: {
             labelWidth: 60,
+            margin: 5,
             anchor: '100%'
           },
           items: [
@@ -83,6 +84,7 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
           itemId: 'commentForm',
           defaults: {
             labelWidth: 60,
+            margin: 5,
             anchor: '100%'
           },
           items: [
