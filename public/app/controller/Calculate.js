@@ -65,7 +65,7 @@ Ext.define('YdmcReservation.controller.Calculate', {
       window.down('combo[name=preference]').setValue(result.book.preference);
       window.down('textfield[name=schoolName]').setValue(result.book.schoolName);
       window.down('textfield[name=date]').setValue(Ext.Date.format(new Date(result.book.date), 'Y-m-d'));
-      window.down('textfield[name=registered]').setValue(Ext.Date.format(new Date(result.book.registered), 'Y-m-d'));
+      window.down('textfield[name=registered]').setValue(Ext.Date.format(new Date(result.book.registered), 'Y-m-d H:i:s'));
       window.down('textfield[name=file]').setValue(result.book.file ? result.book.file : '');
       window.down('textarea[name=comment]').setValue(result.book.comment ? result.book.comment : '');
     } else {
