@@ -10,6 +10,7 @@ module.exports = {
   duplicatedBook: '이미 같은 날짜에 예약이 존재합니다.',
   exceedMaxBookCount: '이미 3개 이상의 예약이 있습니다.',
   duplicatedBookPrefernces: '같은 선호 예약이 존재합니다.',
+  fulfilledDay: '선택하신 날은 1순위 예약이 2개 존재해, 예약을 할 수 없는 날입니다.',
   bookSuccess: '예약에 성공했습니다.',
   bookDelete: '예약을 취소했습니다.',
   invalidDateRange: '계산 구간이 올바르지 않습니다.',

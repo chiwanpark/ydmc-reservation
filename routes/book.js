@@ -169,25 +169,37 @@ Book.post = function (request, response) {
         if (count >= 3) { // count exceed
           response.json({success: false, message: Messages.exceedMaxBookCount});
         } else {
+          // check duplicated preferences
           var subQuery2 = Models.Book.count({deprecated: false, register: user._id, preference: preference});
 
           subQuery2.exec().then(function (count) {
             if (count == 0) {
-              // create new book
-              var book = new Models.Book({
-                register: user._id,
-                schoolName: user.schoolName,
-                preference: preference,
-                date: date,
-                deprecated: deprecated
-              });
+              // check fulfilled by two 1st preference books
+              var subQuery3 = Models.Book.count({preference: 1, date: date});
 
-              book.save(function (error, instance) {
-                if (error) {
-                  response.json({success: false, message: Messages.errorOnDatabase});
+              subQuery3.exec().then(function(count) {
+                if (count < 2) {
+                  // create new book
+                  var book = new Models.Book({
+                    register: user._id,
+                    schoolName: user.schoolName,
+                    preference: preference,
+                    date: date,
+                    deprecated: deprecated
+                  });
+
+                  book.save(function (error, instance) {
+                    if (error) {
+                      response.json({success: false, message: Messages.errorOnDatabase});
+                    } else {
+                      response.json({success: true, message: Messages.bookSuccess, instance: instance});
+                    }
+                  });
                 } else {
-                  response.json({success: true, message: Messages.bookSuccess, instance: instance});
+                  response.json({success: false, message: Messages.fulfilledDay});
                 }
+              }, function() {
+                response.json({success: false, message: Messages.errorOnDatabase});
               });
             } else {
               response.json({success: false, message: Messages.duplicatedBookPrefernces});
