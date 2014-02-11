@@ -44,19 +44,14 @@ Ext.define('YdmcReservation.controller.Book', {
   },
 
   isHoliday: function (date) {
-    if (!this.holidayStore) {
-      this.holidayStore = Ext.create('YdmcReservation.store.Holiday');
-      this.holidayStore.load();
-    }
-
     var dateString = Ext.Date.format(date, 'Y-m-d');
 
-    var filtered = this.holidayStore.queryBy(function (raw) {
+    var filtered = this.bookStore.queryBy(function (raw) {
       var startDateString = Ext.Date.format(raw.data.StartDate, 'Y-m-d');
-      return startDateString === dateString;
+      return startDateString === dateString && raw.data.CalendarId == 4;
     });
 
-    return filtered.length > 0;
+    return !filtered.length;
   },
 
   addBookAction: function () {

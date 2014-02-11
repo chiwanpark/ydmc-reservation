@@ -15,6 +15,7 @@ module.exports = {
   invalidDateRange: '계산 구간이 올바르지 않습니다.',
   cannotBookOnHoliday: '선택하신 날은 예약이 불가능 한 날짜입니다.',
   holiday: '예약 금지일',
+  workingday: '예약 가능일',
   fileUploadError: '파일 업로드 중 에러가 발생했습니다.',
   savePreferencesSuccess: '환경설정을 저장 하였습니다.',
   savePreferencesFailed: '환경설정 저장에 실패했습니다.',

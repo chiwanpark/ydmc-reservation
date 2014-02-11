@@ -26,7 +26,7 @@ var summerizeHoliday = function (holiday) {
   return {
     id: +holiday._id.getTimestamp() + Math.random() * 999,
     cid: 4,
-    title: Messages.holiday,
+    title: Messages.workingday,
     start: holiday.date,
     end: holiday.date,
     ad: true
@@ -134,7 +134,7 @@ Book.getSummaryList = function (request, response) {
 
   query.exec().then(function (books) {
       var summerizedBooks = _.map(books, summerizeBook);
-      var subQuery = Models.Holiday.find().where('date').gte(startDate).where('date').lte(endDate);
+      var subQuery = Models.WorkingDay.find().where('date').gte(startDate).where('date').lte(endDate);
       subQuery.exec().then(function (holidays) {
         var summerizedHolidays = _.map(holidays, summerizeHoliday);
         response.json({success: true, books: summerizedBooks.concat(summerizedHolidays)});
@@ -159,9 +159,9 @@ Book.post = function (request, response) {
   }
 
   // check if date is holiday
-  var query = Models.Holiday.count({date: date});
+  var query = Models.WorkingDay.count({date: date});
   query.exec().then(function (count) {
-    if (count == 0) {
+    if (count == 1) {
       // check count of undeprecated books < 3
       var subQuery = Models.Book.count({deprecated: false, register: user._id});
 

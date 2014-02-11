@@ -21,7 +21,7 @@ Ext.define('YdmcReservation.store.BookCalendar', {
     },
     {
       id: 4,
-      title: '예약 금지일',
+      title: '예약 가능일',
       color: 2
     }
   ]

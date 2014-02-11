@@ -17,6 +17,7 @@ Ext.application({
   controllers: [
     'YdmcReservation.controller.User',
     'YdmcReservation.controller.Holiday',
+    'YdmcReservation.controller.WorkingDay',
     'YdmcReservation.controller.Book',
     'YdmcReservation.controller.Calculate',
     'YdmcReservation.controller.AdditionalInfo',
