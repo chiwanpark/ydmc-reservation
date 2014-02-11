@@ -3,6 +3,9 @@
 var Models = require('../models');
 var Messages = require('../messages');
 var Middlewares = require('../middlewares');
+var nconf = require('nconf');
+
+nconf.file({file: 'preferences.json', dir: '../'});
 
 var User = {};
 
@@ -146,6 +149,11 @@ User.login = function (request, response) {
 
   query.exec().then(function (user) {
     if (user && user.verifyPassword(password)) {
+      if (!user.admin && !nconf.get('available')) {
+        response.json({success: false, message: Messages.notAvailableTime});
+        return;
+      }
+
       request.session.regenerate(function () {
         request.session.user = user;
         response.json({success: true, message: Messages.loginSuccess, instance: user});

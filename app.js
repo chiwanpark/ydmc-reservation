@@ -3,6 +3,8 @@ var _ = require('lodash');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
+var nconf = require('nconf');
+var fs = require('fs');
 
 var app = express();
 
@@ -30,6 +32,16 @@ if ('development' == app.get('env')) {
 _.forIn(routes, function (value) {
   value.registerRoute(app);
 });
+
+nconf.file({file: 'preferences.json'});
+
+if (!nconf.get('configured')) {
+  nconf.set('configured', true);
+  nconf.set('available', true);
+  nconf.set('notice', '공지사항이 없습니다.');
+  nconf.save(function (err) {
+  });
+}
 
 http.createServer(app).listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));

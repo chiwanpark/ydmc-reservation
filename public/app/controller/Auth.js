@@ -206,6 +206,25 @@ Ext.define('YdmcReservation.controller.Auth', {
 
     window.setTitle(title);
 
+    Ext.Ajax.request({
+      url: '/preferences',
+      method: 'GET',
+      success: function(connection) {
+        var result = Ext.JSON.decode(connection.responseText);
+        var noticeWindow = Ext.create('Ext.window.Window', {
+          title: '공지사항',
+          closable: true,
+          width: 300,
+          height: 400,
+          closeAction: 'destroy',
+          bodyPadding: 15,
+          html: Ext.util.Format.nl2br(result.preferences.notice)
+        });
+
+        noticeWindow.center().show();
+      }
+    });
+
     if (!this.app.loggedUser.admin) {
       window.down('buttongroup#adminMenu').setDisabled(true);
     }
