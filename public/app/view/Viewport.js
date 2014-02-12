@@ -78,7 +78,7 @@ Ext.define('YdmcReservation.view.Viewport', {
               {
                 xtype: 'button',
                 itemId: 'doBook',
-                text: '예약하기'
+                text: '예약하기 (새로고침)'
               },
               {
                 xtype: 'button',
