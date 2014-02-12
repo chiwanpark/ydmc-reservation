@@ -37,7 +37,7 @@ nconf.file({file: 'preferences.json'});
 
 if (!nconf.get('configured')) {
   nconf.set('configured', true);
-  nconf.set('available', true);
+  nconf.set('available', false);
   nconf.set('notice', '공지사항이 없습니다.');
   nconf.save(function (err) {
   });

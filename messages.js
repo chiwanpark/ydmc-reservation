@@ -20,6 +20,8 @@ module.exports = {
   fileUploadError: '파일 업로드 중 에러가 발생했습니다.',
   savePreferencesSuccess: '환경설정을 저장 하였습니다.',
   savePreferencesFailed: '환경설정 저장에 실패했습니다.',
+  initializeSystemSuccess: '시스템 초기화에 성공했습니다.',
+  initializeSystemFailed: '시스템 초기화에 실패했습니다.',
   notAvailableTime: '관리자가 시스템 접속을 금지한 시간입니다.',
   userUpdateSuccess: '선생님 정보 수정에 성공했습니다. 다시 로그인 해주세요.',
   updateSuccess: '정보 수정에 성공했습니다.'

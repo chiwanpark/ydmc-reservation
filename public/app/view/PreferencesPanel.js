@@ -39,6 +39,11 @@ Ext.define('YdmcReservation.view.PreferencesPanel', {
           xtype: 'tbfill'
         },
         {
+          itemId: 'initialize',
+          text: '초기화 하기',
+          xtype: 'button'
+        },
+        {
           xtype: 'button',
           itemId: 'submit',
           text: '저장',
