@@ -83,7 +83,7 @@ Ext.define('YdmcReservation.view.Viewport', {
               {
                 xtype: 'button',
                 itemId: 'addInformation',
-                text: '추가 정보 입력'
+                text: '신청서 제출'
               }
             ]
           },
