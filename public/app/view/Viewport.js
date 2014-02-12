@@ -6,7 +6,7 @@ Ext.define('YdmcReservation.view.Viewport', {
     type: 'fit',
     padding: 5
   },
-  default: {
+  defaults: {
     split: false,
     collapsible: false
   },
