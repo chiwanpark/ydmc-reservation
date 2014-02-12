@@ -57,8 +57,12 @@ Book.getFile = function (response, book) {
   var query = Models.File.find({register: book.register}).sort({registered: 'desc'}).limit(1).lean();
 
   query.exec().then(function (file) {
-    file = file[0];
-    book.file = Book.domain + '/file/download/' + file._id;
+    if (file.length > 0) {
+      file = file[0];
+      book.file = Book.domain + '/file/download/' + file._id;
+    } else {
+      book.file = '';
+    }
     Book.getComment(response, book);
   }, function () {
     book.file = '';
@@ -67,11 +71,15 @@ Book.getFile = function (response, book) {
 };
 
 Book.getComment = function (response, book) {
-  var query = Models.Comment.find({register: book.register}).sort({registered: 'desc'}).limit(1).lean();;
+  var query = Models.Comment.find({register: book.register}).sort({registered: 'desc'}).limit(1).lean();
 
   query.exec().then(function (comment) {
-    comment = comment[0];
-    book.comment = comment.comment;
+    if (comment.length > 0) {
+      comment = comment[0];
+      book.comment = comment.comment;
+    } else {
+      book.comment = '';
+    }
     Book.returnBook(response, book);
   }, function () {
     book.comment = '';
@@ -79,7 +87,7 @@ Book.getComment = function (response, book) {
   });
 };
 
-Book.returnBook = function(response, book) {
+Book.returnBook = function (response, book) {
   response.json({success: true, book: book});
 };
 
@@ -177,7 +185,7 @@ Book.post = function (request, response) {
               // check fulfilled by two 1st preference books
               var subQuery3 = Models.Book.count({preference: 1, date: date});
 
-              subQuery3.exec().then(function(count) {
+              subQuery3.exec().then(function (count) {
                 if (count < 2) {
                   // create new book
                   var book = new Models.Book({
@@ -198,7 +206,7 @@ Book.post = function (request, response) {
                 } else {
                   response.json({success: false, message: Messages.fulfilledDay});
                 }
-              }, function() {
+              }, function () {
                 response.json({success: false, message: Messages.errorOnDatabase});
               });
             } else {
