@@ -74,7 +74,7 @@ Ext.define('YdmcReservation.view.UserManageGridPanel', {
       xtype: 'checkcolumn'
     },
     {
-      text: '활성됨',
+      text: '승인됨',
       dataIndex: 'verified',
       flex: 0.5,
       xtype: 'checkcolumn'

@@ -145,12 +145,17 @@ User.login = function (request, response) {
     return;
   }
 
-  var query = Models.User.findOne({email: email, verified: true});
+  var query = Models.User.findOne({email: email});
 
   query.exec().then(function (user) {
     if (user && user.verifyPassword(password)) {
       if (!user.admin && !nconf.get('available')) {
         response.json({success: false, message: Messages.notAvailableTime});
+        return;
+      }
+
+      if (!user.verified) {
+        response.json({success: false, message: Messages.userNotVerified});
         return;
       }
 
