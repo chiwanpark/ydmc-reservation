@@ -28,12 +28,9 @@ Ext.define('YdmcReservation.view.PreferencesPanel', {
           xtype: 'textarea'
         }
       ]
-    }
-  ],
-  dockedItems: [
+    },
     {
       xtype: 'toolbar',
-      dock: 'bottom',
       items: [
         {
           xtype: 'tbfill'

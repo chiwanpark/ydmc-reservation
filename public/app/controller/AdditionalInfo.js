@@ -8,7 +8,7 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
   postFileURL: '/file',
   postCommentURL: '/comment',
 
-  views: ['Viewport'],
+  views: ['Viewport', 'ApplicationPanel'],
 
   init: function (app) {
     this.app = app;
@@ -36,83 +36,20 @@ Ext.define('YdmcReservation.controller.AdditionalInfo', {
     var viewportWindow = this.app.getViewportWindow();
     var contentsPanel = viewportWindow.down('panel#contentsPanel');
 
+    var applicationPanel = Ext.create('YdmcReservation.view.ApplicationPanel');
+
+    if (this.comment) {
+      applicationPanel.down('#comment').setValue(this.comment.comment);
+    }
+
+    var fileInfo = '파일을 올려주세요!';
+    if (this.fileInfo) {
+      fileInfo = '기존 파일: ' + this.fileInfo.originName + ' (' + this.fileInfo.registered + ')';
+    }
+    applicationPanel.down('#fileInfo').setValue(fileInfo);
+
     contentsPanel.removeAll(true);
-    contentsPanel.add({
-      xtype: 'panel',
-      itemId: 'additionalInfoPanel',
-      items: [
-        {
-          xtype: 'form',
-          itemId: 'fileForm',
-          title: '파일 첨부하기',
-          defaults: {
-            labelWidth: 60,
-            margin: 5,
-            anchor: '100%'
-          },
-          items: [
-            {
-              xtype: 'displayfield',
-              value: this.fileInfo
-                ? '기존 파일: ' + this.fileInfo.originName + ' (' + this.fileInfo.registered + ')'
-                : '파일을 올려주세요.'
-            },
-            {
-              xtype: 'filefield',
-              name: 'attachment',
-              fieldLabel: '첨부파일',
-              buttonText: '찾기',
-              allowBlank: false
-            }
-          ],
-          bbar: {
-            items: [
-              {
-                xtype: 'tbfill'
-              },
-              {
-                xtype: 'button',
-                formBind: true,
-                text: '파일 올리기',
-                itemId: 'submit'
-              }
-            ]
-          }
-        },
-        {
-          xtype: 'form',
-          itemId: 'commentForm',
-          defaults: {
-            labelWidth: 60,
-            margin: 5,
-            anchor: '100%'
-          },
-          items: [
-            {
-              xtype: 'textarea',
-              fieldLabel: '추가 코멘트',
-              name: 'comment',
-              value: this.comment
-                ? this.comment.comment
-                : ''
-            }
-          ],
-          bbar: {
-            items: [
-              {
-                xtype: 'tbfill'
-              },
-              {
-                xtype: 'button',
-                itemId: 'submit',
-                formBind: true,
-                text: '코멘트 올리기'
-              }
-            ]
-          }
-        }
-      ]
-    });
+    contentsPanel.add(applicationPanel);
   },
 
   lastFileInfoArrived: function (connection) {

@@ -169,12 +169,13 @@ Extensible.Config = {
                     bootstrap = '-bootstrap';
                 }
         }
-        
-        me.includeStylesheet(me.extJsRoot + 'resources/css/ext-all.css');
+
+        me.includeStylesheet(me.extJsRoot + 'resources/ext-theme-neptune/ext-theme-neptune-all.css');
         me.includeStylesheet(me.extensibleRoot + 'resources/css/extensible-all.css' + cacheBuster);
         me.includeStylesheet(me.extensibleRoot + 'examples/examples.css?_dc=' + Extensible.version);
-        
+
         me.includeScript(me.extJsRoot + 'ext' + suffix + '.js');
+        me.includeScript(me.extJsRoot + 'ext-theme-neptune.js');
         me.includeScript(me.extensibleRoot + 'lib/extensible' + suffix + bootstrap + '.js' + cacheBuster);
         me.includeScript(me.extensibleRoot + 'examples/examples.js?_dc=' + Extensible.version);
     }
