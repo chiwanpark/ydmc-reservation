@@ -78,6 +78,17 @@ Ext.define('YdmcReservation.view.UserManageGridPanel', {
       dataIndex: 'verified',
       flex: 0.5,
       xtype: 'checkcolumn'
+    },
+    {
+      text: '삭제',
+      xtype: 'actioncolumn',
+      align: 'center',
+      width: 50,
+      items: [{
+        itemId: 'deleteBtn',
+        icon: 'http://try.sencha.com/extjs/4.0.7/docs/Ext.grid.column.Action.1/app/resources/images/delete.png',
+        tooltip: '삭제하기'
+      }]
     }
   ]
 });

@@ -22,6 +22,10 @@ Ext.define('YdmcReservation.controller.User', {
         click: this.rejectChanges,
         scope: this
       },
+      'viewport userManageGridPanel actioncolumn': {
+        click: this.deleteUser,
+        scope: this
+      },
       'viewport button#showUserInfo': {
         click: this.showUserInfo,
         scope: this
@@ -30,6 +34,41 @@ Ext.define('YdmcReservation.controller.User', {
         click: this.updateUserInfo,
         scope: this
       }
+    });
+  },
+
+  deleteUser: function(grid, cell, rowIndex) {
+    var store = grid.getStore();
+    var record = store.getAt(rowIndex);
+    var data = record.data;
+
+    Ext.Msg.show({
+      title: '삭제',
+      msg: '사용자를 삭제하면 관련된 예약 정보를 비롯해 모든 데이터가 삭제되며, 다시 복구할 수 없습니다. 계속하시겠습니까?',
+      icon: Ext.Msg.QUESTION,
+      buttons: Ext.Msg.YESNO,
+      fn: function (buttonId) {
+        if (buttonId == 'yes' || buttonId == 'ok') {
+          Ext.Ajax.request({
+            method: 'DELETE',
+            url: this.userURL + '/' + data._id,
+            scope: this,
+            success: function() {
+              store.load();
+            },
+            failure: function() {
+              Ext.Msg.show({
+                title: '삭제 실패!',
+                msg: '사용자 삭제에 실패했습니다. 다시 시도해주세요.',
+                buttons: Ext.Msg.OK,
+                icon: Ext.Msg.ERROR
+              });
+              store.load();
+            }
+          })
+        }
+      },
+      scope: this
     });
   },
 
