@@ -22,6 +22,8 @@ module.exports = {
   savePreferencesFailed: '환경설정 저장에 실패했습니다.',
   initializeSystemSuccess: '시스템 초기화에 성공했습니다.',
   initializeSystemFailed: '시스템 초기화에 실패했습니다.',
+  userDeleted: '사용자가 삭제되었습니다.',
+  userDeleteFailed: '사용자 삭제에 실패했습니다.',
   notAvailableTime: '관리자가 시스템 접속을 금지한 시간입니다.',
   userUpdateSuccess: '선생님 정보 수정에 성공했습니다. 다시 로그인 해주세요.',
   userNotVerified: '관리자의 승인이 필요합니다.',

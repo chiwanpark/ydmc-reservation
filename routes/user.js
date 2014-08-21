@@ -15,6 +15,7 @@ User.registerRoute = function (app) {
   app.post('/user/login', User.login);
   app.get('/user/logout', User.logout);
   app.get('/user/:id', User.getById);
+  app.delete('/user/:id', User.deleteById);
   app.put('/user/:id', Middlewares.Auth.requireLogged, User.put);
 };
 
@@ -174,6 +175,21 @@ User.login = function (request, response) {
 User.logout = function (request, response) {
   request.session.destroy(function () {
     response.json({success: true, message: Messages.logoutSuccess});
+  });
+};
+
+User.deleteById = function (request, response) {
+  var id = request.params.id || null;
+  var query = Models.Book.remove({register: id});
+
+  query.exec().then(function () {
+    Models.User.findByIdAndRemove(id).exec().then(function () {
+      response.json({success: true, message: Messages.userDeleted});
+    }, function () {
+      response.json({success: false, message: Messages.userDeleteFailed});
+    });
+  }, function () {
+    response.json({success: false, message: Messages.userDeleteFailed});
   });
 };
 
