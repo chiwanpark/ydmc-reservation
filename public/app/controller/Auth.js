@@ -216,6 +216,7 @@ Ext.define('YdmcReservation.controller.Auth', {
           closable: true,
           width: 300,
           height: 400,
+          autoScroll: true,
           closeAction: 'destroy',
           bodyPadding: 15,
           html: Ext.util.Format.nl2br(result.preferences.notice)
