@@ -38,6 +38,10 @@ Ext.define('YdmcReservation.controller.Book', {
         click: this.deleteBookAction,
         scope: this
       },
+      '#editBookWindow bookInfoPanel button#modifyBook': {
+        click: this.modifyBookAction,
+        scope: this
+      },
       'bookInfoPanel button#cancel': {
         click: this.closeBookWindow,
         scope: this
@@ -85,6 +89,38 @@ Ext.define('YdmcReservation.controller.Book', {
     Ext.Ajax.request({
       method: 'DELETE',
       url: this.bookURL + '/' + id,
+      success: this.bookActionSuccess,
+      failure: this.bookActionFailure,
+      scope: this
+    });
+  },
+
+  modifyBookAction: function() {
+    var bookWindow = this.getBookWindow();
+    var id = bookWindow.down('hidden[name=id]').getValue();
+    var date = bookWindow.down('textfield[name=date]').getValue();
+    var preference = bookWindow.down('combo[name=preference]').getValue();
+
+    if (this.isHoliday(date)) {
+      Ext.Msg.show({
+        title: 'Error!',
+        msg: '해당 날짜는 예약 금지일 입니다.',
+        icon: Ext.Msg.ERROR,
+        buttons: Ext.Msg.OK
+      });
+
+      return false;
+    }
+
+    this.maskBookInfoPanel();
+
+    Ext.Ajax.request({
+      method: 'PUT',
+      url: this.bookURL + '/' + id,
+      params: {
+        date: date,
+        preference: preference
+      },
       success: this.bookActionSuccess,
       failure: this.bookActionFailure,
       scope: this
@@ -221,6 +257,7 @@ Ext.define('YdmcReservation.controller.Book', {
     schoolNameComponent.setValue(this.app.loggedUser.schoolName);
     dateComponent.setValue(Ext.Date.format(record.data.StartDate, 'Y-m-d'));
 
+    preferenceComponent.setReadOnly(true);
     schoolNameComponent.setReadOnly(true);
     bookWindow.center().show();
 

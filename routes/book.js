@@ -37,6 +37,7 @@ Book.registerRoute = function (app) {
   app.get('/book', Middlewares.Auth.requireAdmin, Book.getList);
   app.get('/book/summary', Middlewares.Auth.requireLogged, Book.getSummaryList);
   app.get('/book/:id', Middlewares.Auth.requireAdmin, Book.get);
+  app.put('/book/:id', Middlewares.Auth.requireLogged, Book.put);
   app.get('/book/:id/summary', Middlewares.Auth.requireLogged, Book.getSummary);
   app.post('/book', Middlewares.Auth.requireLogged, Book.post);
   app.delete('/book/:id', Middlewares.Auth.requireLogged, Book.delete);
@@ -50,6 +51,49 @@ Book.get = function (request, response) {
     Book.getFile(response, book);
   }, function () {
     response.json({success: false, message: Messages.errorOnDatabase});
+  });
+};
+
+Book.put = function (request, response) {
+  var user = request.session.user;
+  var id = request.params.id;
+  var date = request.body.date;
+
+  var query = Models.Book.findById(id);
+
+  query.exec().then(function (book) {
+    if (user._id != book.register) {
+      response.json({success: false, message: Messages.unauthorized});
+    } else {
+      var subQuery = Models.WorkingDay.count({date: date});
+
+      subQuery.exec().then(function (count) {
+        if (count == 0) {
+          response.json({success: false, message: Messages.cannotBookOnHoliday});
+        } else {
+          var subQuery2 = Models.Book.count({preference: 1, date: date});
+          subQuery2.exec().then(function (count) {
+            if (count < 2) {
+              book.date = date;
+
+              book.save(function (error, instance) {
+                if (error) {
+                  response.json({success: false, message: Messages.errorOnDatabase});
+                } else {
+                  response.json({success: true, message: Messages.bookSuccess, instance: instance});
+                }
+              });
+            } else {
+              response.json({success: false, message: Messages.fulfilledDay});
+            }
+          }, function () {
+            response.json({success: false, message: Messages.errorOnDatabase});
+          });
+        }
+      }, function () {
+        response.json({success: false, message: Messages.errorOnDatabase});
+      });
+    }
   });
 };
 
