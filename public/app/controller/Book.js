@@ -27,6 +27,7 @@ Ext.define('YdmcReservation.controller.Book', {
         eventupdate: this.blockEvent,
         initdrag: this.blockEvent,
         rangeselect: this.blockEvent,
+        contextmenu: this.blockEvent,
         scope: this
       },
       '#newBookWindow bookInfoPanel button#submit': {
@@ -163,7 +164,11 @@ Ext.define('YdmcReservation.controller.Book', {
     });
 
     bookWindow.down('textfield[name=schoolName]').setValue(this.app.loggedUser.schoolName);
-    bookWindow.down('textfield[name=date]').setValue(Ext.Date.format(date, 'Y-m-d'));
+
+    var dateComponent = bookWindow.down('textfield[name=date]');
+    dateComponent.setValue(Ext.Date.format(date, 'Y-m-d'));
+    dateComponent.setReadOnly(true);
+
     bookWindow.center().show();
     return false;
   },
@@ -173,13 +178,13 @@ Ext.define('YdmcReservation.controller.Book', {
       return false;
     }
 
-    if (record.raw.register !== this.app.loggedUser._id) {
+    if (record.raw.register !== this.app.loggedUser._id && !this.app.loggedUser.admin) {
       return false;
     }
 
     var bookWindow = Ext.create('YdmcReservation.view.BookWindow', {
       itemId: 'editBookWindow',
-      title: '예약 삭제하기'
+      title: '예약 수정하기'
     });
 
     var toolbar = bookWindow.down('toolbar');
@@ -191,7 +196,13 @@ Ext.define('YdmcReservation.controller.Book', {
       {
         xtype: 'button',
         itemId: 'deleteBook',
-        text: '이 예약 삭제하기',
+        text: '삭제하기',
+        formBind: true
+      },
+      {
+        xtype: 'button',
+        itemId: 'modifyBook',
+        text: '수정하기',
         formBind: true
       },
       {
@@ -210,9 +221,7 @@ Ext.define('YdmcReservation.controller.Book', {
     schoolNameComponent.setValue(this.app.loggedUser.schoolName);
     dateComponent.setValue(Ext.Date.format(record.data.StartDate, 'Y-m-d'));
 
-    preferenceComponent.setReadOnly(true);
     schoolNameComponent.setReadOnly(true);
-    dateComponent.setReadOnly(true);
     bookWindow.center().show();
 
     return false;

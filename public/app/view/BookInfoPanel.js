@@ -47,6 +47,8 @@ Ext.define('YdmcReservation.view.BookInfoPanel', {
           fieldLabel: '학교 이름'
         },
         {
+          xtype: 'datefield',
+          format: 'Y-m-d',
           name: 'date',
           fieldLabel: '날짜'
         }

@@ -5,7 +5,7 @@ Ext.define('YdmcReservation.view.BookWindow', {
   alias: 'widget.bookWindow',
   requires: ['YdmcReservation.view.BookInfoPanel'],
   layout: 'fit',
-  closable: false,
+  closable: true,
   modal: true,
   items: {
     xtype: 'bookInfoPanel'

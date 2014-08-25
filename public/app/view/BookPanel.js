@@ -8,5 +8,9 @@ Ext.define('YdmcReservation.view.BookPanel', {
   showWeekView: false,
   showMultiWeekView: false,
   showTime: false,
-  editModal: false
+  editModal: false,
+
+  viewConfig: {
+    enableContextMenus: false
+  }
 });
