@@ -20,6 +20,7 @@ Ext.define('YdmcReservation.controller.Book', {
         eventadd: this.blockEvent,
         eventcancel: this.blockEvent,
         eventclick: this.editBookWindow,
+        beforeeventdelete: this.blockEvent,
         eventdelete: this.blockEvent,
         eventmove: this.blockEvent,
         eventresize: this.blockEvent,

@@ -6,6 +6,7 @@ Ext.define('YdmcReservation.view.HolidayPanel', {
 
   alias: 'widget.holidayPanel',
   title: '예약 금지일 달력',
+  readOnly: true,
   showDayView: false,
   showWeekView: false,
   showMultiWeekView: false,
