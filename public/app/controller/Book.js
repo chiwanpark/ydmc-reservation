@@ -254,7 +254,7 @@ Ext.define('YdmcReservation.controller.Book', {
 
     bookWindow.down('hidden[name=id]').setValue(record.raw._id);
     preferenceComponent.setValue(record.data.CalendarId);
-    schoolNameComponent.setValue(this.app.loggedUser.schoolName);
+    schoolNameComponent.setValue(record.raw.title.substring(4));
     dateComponent.setValue(Ext.Date.format(record.data.StartDate, 'Y-m-d'));
 
     preferenceComponent.setReadOnly(true);

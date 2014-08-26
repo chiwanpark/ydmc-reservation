@@ -62,7 +62,7 @@ Book.put = function (request, response) {
   var query = Models.Book.findById(id);
 
   query.exec().then(function (book) {
-    if (user._id != book.register) {
+    if (user._id != book.register && !user.admin) {
       response.json({success: false, message: Messages.unauthorized});
     } else {
       var subQuery = Models.WorkingDay.count({date: date});
